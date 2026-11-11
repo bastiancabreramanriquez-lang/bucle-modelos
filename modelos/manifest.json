@@ -1,0 +1,19 @@
+{
+ "htdemucs": {
+  "size": 102671319,
+  "sha256": "bb41d3ee529fb3c1a4915db680cd8fb01a10e0fb2504a861d883a5aadbf21ba9",
+  "parts": [
+   "htdemucs.ort.part00",
+   "htdemucs.ort.part01",
+   "htdemucs.ort.part02"
+  ]
+ },
+ "htdemucs_6s": {
+  "size": 67132314,
+  "sha256": "5e9a47861c97c38ffce212963f7f76d749eac66f8cd23084345bb8962316217b",
+  "parts": [
+   "htdemucs_6s.ort.part00",
+   "htdemucs_6s.ort.part01"
+  ]
+ }
+}
