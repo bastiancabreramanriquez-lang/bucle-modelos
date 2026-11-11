@@ -1,16 +1,4 @@
 python: Python 3.11.18 · node: v20.20.2
-::group::Descargar htdemucs ya convertido
-https://musicdemixer.com/models/htdemucs.ort.gz -> HTTP 404, 91024 bytes
-https://freemusicdemixer.com/models/htdemucs.ort.gz -> HTTP 404, 91024 bytes
-https://pro.musicdemixer.com/models/htdemucs.ort.gz -> HTTP 000err, 0 bytes
-::warning::No se pudo descargar htdemucs ya convertido; se convertirá desde PyTorch
-::endgroup::
-::group::Descargar htdemucs_6s ya convertido
-https://musicdemixer.com/models/htdemucs_6s.ort.gz -> HTTP 404, 91024 bytes
-https://freemusicdemixer.com/models/htdemucs_6s.ort.gz -> HTTP 404, 91024 bytes
-https://pro.musicdemixer.com/models/htdemucs_6s.ort.gz -> HTTP 000err, 0 bytes
-::warning::No se pudo descargar htdemucs_6s ya convertido; se convertirá desde PyTorch
-::endgroup::
 ::group::torch 2.5.1 (a) + onnxruntime 1.22.0
 demucs            4.0.0     /home/runner/work/bucle-modelos/bucle-modelos/ext/demucs.onnx/demucs-for-onnx
 diffq             0.2.4
@@ -26,13 +14,13 @@ torch             2.5.1+cpu
 torchaudio        2.5.1+cpu
 importaciones OK
 Downloading: "https://dl.fbaipublicfiles.com/demucs/hybrid_transformer/955717e8-8726e21a.th" to /home/runner/.cache/torch/hub/checkpoints/955717e8-8726e21a.th
-  0%|          | 0.00/80.2M [00:00<?, ?B/s] 42%|████▏     | 33.4M/80.2M [00:00<00:00, 349MB/s] 86%|████████▌ | 68.8M/80.2M [00:00<00:00, 362MB/s]100%|██████████| 80.2M/80.2M [00:00<00:00, 356MB/s]
+  0%|          | 0.00/80.2M [00:00<?, ?B/s] 37%|███▋      | 29.6M/80.2M [00:00<00:00, 310MB/s] 74%|███████▍  | 59.2M/80.2M [00:00<00:00, 275MB/s]100%|██████████| 80.2M/80.2M [00:00<00:00, 280MB/s]
 Model successfully converted to ONNX format at onnx/htdemucs.onnx
 Downloading: "https://dl.fbaipublicfiles.com/demucs/hybrid_transformer/5c90dfd2-34c22ccb.th" to /home/runner/.cache/torch/hub/checkpoints/5c90dfd2-34c22ccb.th
-  0%|          | 0.00/52.4M [00:00<?, ?B/s] 64%|██████▍   | 33.6M/52.4M [00:00<00:00, 352MB/s]100%|██████████| 52.4M/52.4M [00:00<00:00, 353MB/s]
+  0%|          | 0.00/52.4M [00:00<?, ?B/s] 67%|██████▋   | 35.1M/52.4M [00:00<00:00, 368MB/s]100%|██████████| 52.4M/52.4M [00:00<00:00, 397MB/s]
 Model successfully converted to ONNX format at onnx/htdemucs_6s.onnx
-2026-11-11 21:53:38,537 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.config
-2026-11-11 21:53:42,456 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.with_runtime_opt.config
+2026-11-11 22:11:59,905 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.config
+2026-11-11 22:12:03,798 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.with_runtime_opt.config
 Converting models with optimization style 'Fixed' and level 'all'
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.ort
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.ort
@@ -43,33 +31,37 @@ Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/on
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.with_runtime_opt.ort
 Converted 2/2 models successfully.
 Converting models again without runtime optimizations to generate a complete config file. These converted models are temporary and will be deleted.
-Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpqo4hkk12.without_runtime_opt/htdemucs_6s.ort
-Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpqo4hkk12.without_runtime_opt/htdemucs.ort
+Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpwcci7th6.without_runtime_opt/htdemucs_6s.ort
+Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpwcci7th6.without_runtime_opt/htdemucs.ort
 Converted 2/2 models successfully.
 Generating config file from ORT format models with optimization style 'Runtime' and level 'all'
 total 985268
-drwxr-xr-x  2 runner runner      4096 Nov 11 21:53 .
-drwxr-xr-x 11 runner runner      4096 Nov 11 21:53 ..
--rw-r--r--  1 runner runner 174263526 Nov 11 21:53 htdemucs.onnx
--rw-r--r--  1 runner runner 210172080 Nov 11 21:53 htdemucs.ort
--rw-r--r--  1 runner runner 210209656 Nov 11 21:53 htdemucs.with_runtime_opt.ort
--rw-r--r--  1 runner runner 114559139 Nov 11 21:53 htdemucs_6s.onnx
--rw-r--r--  1 runner runner 149823040 Nov 11 21:53 htdemucs_6s.ort
--rw-r--r--  1 runner runner 149860616 Nov 11 21:53 htdemucs_6s.with_runtime_opt.ort
--rw-r--r--  1 runner runner       862 Nov 11 21:53 required_operators_and_types.config
--rw-r--r--  1 runner runner      1123 Nov 11 21:53 required_operators_and_types.with_runtime_opt.config
+drwxr-xr-x  2 runner runner      4096 Nov 11 22:12 .
+drwxr-xr-x 11 runner runner      4096 Nov 11 22:11 ..
+-rw-r--r--  1 runner runner 174263526 Nov 11 22:11 htdemucs.onnx
+-rw-r--r--  1 runner runner 210172080 Nov 11 22:11 htdemucs.ort
+-rw-r--r--  1 runner runner 210209656 Nov 11 22:12 htdemucs.with_runtime_opt.ort
+-rw-r--r--  1 runner runner 114559139 Nov 11 22:11 htdemucs_6s.onnx
+-rw-r--r--  1 runner runner 149823040 Nov 11 22:11 htdemucs_6s.ort
+-rw-r--r--  1 runner runner 149860616 Nov 11 22:12 htdemucs_6s.with_runtime_opt.ort
+-rw-r--r--  1 runner runner       862 Nov 11 22:11 required_operators_and_types.config
+-rw-r--r--  1 runner runner      1123 Nov 11 22:12 required_operators_and_types.with_runtime_opt.config
 Probando onnx/htdemucs.ort (torch 2.5.1 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs.with_runtime_opt.ort (torch 2.5.1 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs_6s.ort (torch 2.5.1 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs_6s.with_runtime_opt.ort (torch 2.5.1 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 ::endgroup::
 ::group::torch 2.8.0 (a) + onnxruntime 1.22.0
 demucs            4.0.0     /home/runner/work/bucle-modelos/bucle-modelos/ext/demucs.onnx/demucs-for-onnx
@@ -87,8 +79,8 @@ torchaudio        2.8.0+cpu
 importaciones OK
 Model successfully converted to ONNX format at onnx/htdemucs.onnx
 Model successfully converted to ONNX format at onnx/htdemucs_6s.onnx
-2026-11-11 21:54:19,544 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.config
-2026-11-11 21:54:23,369 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.with_runtime_opt.config
+2026-11-11 22:14:44,249 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.config
+2026-11-11 22:14:48,273 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.with_runtime_opt.config
 Converting models with optimization style 'Fixed' and level 'all'
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.ort
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.ort
@@ -99,33 +91,37 @@ Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/on
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.with_runtime_opt.ort
 Converted 2/2 models successfully.
 Converting models again without runtime optimizations to generate a complete config file. These converted models are temporary and will be deleted.
-Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpxxgm6k8m.without_runtime_opt/htdemucs_6s.ort
-Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpxxgm6k8m.without_runtime_opt/htdemucs.ort
+Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpcwzbb8wo.without_runtime_opt/htdemucs_6s.ort
+Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpcwzbb8wo.without_runtime_opt/htdemucs.ort
 Converted 2/2 models successfully.
 Generating config file from ORT format models with optimization style 'Runtime' and level 'all'
 total 985268
-drwxr-xr-x  2 runner runner      4096 Nov 11 21:54 .
-drwxr-xr-x 11 runner runner      4096 Nov 11 21:54 ..
--rw-r--r--  1 runner runner 174263526 Nov 11 21:54 htdemucs.onnx
--rw-r--r--  1 runner runner 210172080 Nov 11 21:54 htdemucs.ort
--rw-r--r--  1 runner runner 210209656 Nov 11 21:54 htdemucs.with_runtime_opt.ort
--rw-r--r--  1 runner runner 114559139 Nov 11 21:54 htdemucs_6s.onnx
--rw-r--r--  1 runner runner 149823040 Nov 11 21:54 htdemucs_6s.ort
--rw-r--r--  1 runner runner 149860616 Nov 11 21:54 htdemucs_6s.with_runtime_opt.ort
--rw-r--r--  1 runner runner       862 Nov 11 21:54 required_operators_and_types.config
--rw-r--r--  1 runner runner      1123 Nov 11 21:54 required_operators_and_types.with_runtime_opt.config
+drwxr-xr-x  2 runner runner      4096 Nov 11 22:14 .
+drwxr-xr-x 11 runner runner      4096 Nov 11 22:14 ..
+-rw-r--r--  1 runner runner 174263526 Nov 11 22:14 htdemucs.onnx
+-rw-r--r--  1 runner runner 210172080 Nov 11 22:14 htdemucs.ort
+-rw-r--r--  1 runner runner 210209656 Nov 11 22:14 htdemucs.with_runtime_opt.ort
+-rw-r--r--  1 runner runner 114559139 Nov 11 22:14 htdemucs_6s.onnx
+-rw-r--r--  1 runner runner 149823040 Nov 11 22:14 htdemucs_6s.ort
+-rw-r--r--  1 runner runner 149860616 Nov 11 22:14 htdemucs_6s.with_runtime_opt.ort
+-rw-r--r--  1 runner runner       862 Nov 11 22:14 required_operators_and_types.config
+-rw-r--r--  1 runner runner      1123 Nov 11 22:14 required_operators_and_types.with_runtime_opt.config
 Probando onnx/htdemucs.ort (torch 2.8.0 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs.with_runtime_opt.ort (torch 2.8.0 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs_6s.ort (torch 2.8.0 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs_6s.with_runtime_opt.ort (torch 2.8.0 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 ::endgroup::
 ::group::torch 2.9.1 (a) + onnxruntime 1.22.0
 demucs            4.0.0     /home/runner/work/bucle-modelos/bucle-modelos/ext/demucs.onnx/demucs-for-onnx
@@ -141,11 +137,11 @@ openunmix         1.3.0
 torch             2.9.1+cpu
 torchaudio        2.9.1+cpu
 importaciones OK
-W1111 21:54:41.144000 3116 site-packages/torch/onnx/_internal/exporter/_compat.py:114] Setting ONNX exporter to use operator set version 18 because the requested opset_version 17 is a lower version than we have implementations for. Automatic version conversion will be performed, which may not be successful at converting to the requested version. If version conversion is unsuccessful, the opset version of the exported model will be kept at 18. Please consider setting opset_version >=18 to leverage latest ONNX features
-W1111 21:54:41.766000 3116 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::nms
-W1111 21:54:41.766000 3116 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_align
-W1111 21:54:41.766000 3116 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_pool
-W1111 21:54:41.766000 3116 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::deform_conv2d
+W1111 22:17:06.065000 3288 site-packages/torch/onnx/_internal/exporter/_compat.py:114] Setting ONNX exporter to use operator set version 18 because the requested opset_version 17 is a lower version than we have implementations for. Automatic version conversion will be performed, which may not be successful at converting to the requested version. If version conversion is unsuccessful, the opset version of the exported model will be kept at 18. Please consider setting opset_version >=18 to leverage latest ONNX features
+W1111 22:17:06.836000 3288 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::nms
+W1111 22:17:06.837000 3288 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_align
+W1111 22:17:06.837000 3288 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_pool
+W1111 22:17:06.837000 3288 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::deform_conv2d
 The model version conversion is not supported by the onnxscript version converter and fallback is enabled. The model will be converted using the onnx C API (target version: 17).
 Failed to convert the model to the target version 17 using the ONNX C API. The model was not modified
 Traceback (most recent call last):
@@ -165,11 +161,11 @@ Skipping constant folding for op Split with multiple outputs.
 [torch.onnx] Translate the graph into ONNX...
 [torch.onnx] Translate the graph into ONNX... ✅
 Model successfully converted to ONNX format at onnx/htdemucs.onnx
-W1111 21:54:59.714000 3128 site-packages/torch/onnx/_internal/exporter/_compat.py:114] Setting ONNX exporter to use operator set version 18 because the requested opset_version 17 is a lower version than we have implementations for. Automatic version conversion will be performed, which may not be successful at converting to the requested version. If version conversion is unsuccessful, the opset version of the exported model will be kept at 18. Please consider setting opset_version >=18 to leverage latest ONNX features
-W1111 21:55:00.362000 3128 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::nms
-W1111 21:55:00.363000 3128 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_align
-W1111 21:55:00.363000 3128 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_pool
-W1111 21:55:00.363000 3128 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::deform_conv2d
+W1111 22:17:26.850000 3302 site-packages/torch/onnx/_internal/exporter/_compat.py:114] Setting ONNX exporter to use operator set version 18 because the requested opset_version 17 is a lower version than we have implementations for. Automatic version conversion will be performed, which may not be successful at converting to the requested version. If version conversion is unsuccessful, the opset version of the exported model will be kept at 18. Please consider setting opset_version >=18 to leverage latest ONNX features
+W1111 22:17:27.619000 3302 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::nms
+W1111 22:17:27.619000 3302 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_align
+W1111 22:17:27.619000 3302 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_pool
+W1111 22:17:27.619000 3302 site-packages/torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::deform_conv2d
 The model version conversion is not supported by the onnxscript version converter and fallback is enabled. The model will be converted using the onnx C API (target version: 17).
 Failed to convert the model to the target version 17 using the ONNX C API. The model was not modified
 Traceback (most recent call last):
@@ -189,8 +185,8 @@ Skipping constant folding for op Split with multiple outputs.
 [torch.onnx] Translate the graph into ONNX...
 [torch.onnx] Translate the graph into ONNX... ✅
 Model successfully converted to ONNX format at onnx/htdemucs_6s.onnx
-2026-11-11 21:55:18,389 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.config
-2026-11-11 21:55:21,691 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.with_runtime_opt.config
+2026-11-11 22:17:47,807 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.config
+2026-11-11 22:17:51,466 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.with_runtime_opt.config
 Converting models with optimization style 'Fixed' and level 'all'
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.ort
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.ort
@@ -201,35 +197,39 @@ Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/on
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.with_runtime_opt.ort
 Converted 2/2 models successfully.
 Converting models again without runtime optimizations to generate a complete config file. These converted models are temporary and will be deleted.
-Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpuz69xghy.without_runtime_opt/htdemucs_6s.ort
-Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpuz69xghy.without_runtime_opt/htdemucs.ort
+Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpomks3vcz.without_runtime_opt/htdemucs_6s.ort
+Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpomks3vcz.without_runtime_opt/htdemucs.ort
 Converted 2/2 models successfully.
 Generating config file from ORT format models with optimization style 'Runtime' and level 'all'
 total 981880
-drwxr-xr-x  2 runner runner      4096 Nov 11 21:55 .
-drwxr-xr-x 11 runner runner      4096 Nov 11 21:54 ..
--rw-r--r--  1 runner runner   2640229 Nov 11 21:54 htdemucs.onnx
--rw-r--r--  1 runner runner 168293632 Nov 11 21:54 htdemucs.onnx.data
--rw-r--r--  1 runner runner 209890656 Nov 11 21:55 htdemucs.ort
--rw-r--r--  1 runner runner 209878104 Nov 11 21:55 htdemucs.with_runtime_opt.ort
--rw-r--r--  1 runner runner   2627227 Nov 11 21:55 htdemucs_6s.onnx
--rw-r--r--  1 runner runner 113010688 Nov 11 21:55 htdemucs_6s.onnx.data
--rw-r--r--  1 runner runner 149541256 Nov 11 21:55 htdemucs_6s.ort
--rw-r--r--  1 runner runner 149528680 Nov 11 21:55 htdemucs_6s.with_runtime_opt.ort
--rw-r--r--  1 runner runner       840 Nov 11 21:55 required_operators_and_types.config
--rw-r--r--  1 runner runner      1102 Nov 11 21:55 required_operators_and_types.with_runtime_opt.config
+drwxr-xr-x  2 runner runner      4096 Nov 11 22:17 .
+drwxr-xr-x 11 runner runner      4096 Nov 11 22:17 ..
+-rw-r--r--  1 runner runner   2640229 Nov 11 22:17 htdemucs.onnx
+-rw-r--r--  1 runner runner 168293632 Nov 11 22:17 htdemucs.onnx.data
+-rw-r--r--  1 runner runner 209890656 Nov 11 22:17 htdemucs.ort
+-rw-r--r--  1 runner runner 209878104 Nov 11 22:17 htdemucs.with_runtime_opt.ort
+-rw-r--r--  1 runner runner   2627227 Nov 11 22:17 htdemucs_6s.onnx
+-rw-r--r--  1 runner runner 113010688 Nov 11 22:17 htdemucs_6s.onnx.data
+-rw-r--r--  1 runner runner 149541256 Nov 11 22:17 htdemucs_6s.ort
+-rw-r--r--  1 runner runner 149528680 Nov 11 22:17 htdemucs_6s.with_runtime_opt.ort
+-rw-r--r--  1 runner runner       840 Nov 11 22:17 required_operators_and_types.config
+-rw-r--r--  1 runner runner      1102 Nov 11 22:17 required_operators_and_types.with_runtime_opt.config
 Probando onnx/htdemucs.ort (torch 2.9.1 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for ReduceMean(18) node with name 'node_mean'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs.with_runtime_opt.ort (torch 2.9.1 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for ReduceMean(18) node with name 'node_mean'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs_6s.ort (torch 2.9.1 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for ReduceMean(18) node with name 'node_mean'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs_6s.with_runtime_opt.ort (torch 2.9.1 a)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for ReduceMean(18) node with name 'node_mean'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 ::endgroup::
 ::group::torch 2.9.1 (ts) + onnxruntime 1.22.0
 demucs            4.0.0     /home/runner/work/bucle-modelos/bucle-modelos/ext/demucs.onnx/demucs-for-onnx
@@ -247,8 +247,8 @@ torchaudio        2.9.1+cpu
 importaciones OK
 Model successfully converted to ONNX format at onnx/htdemucs.onnx
 Model successfully converted to ONNX format at onnx/htdemucs_6s.onnx
-2026-11-11 21:55:44,739 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.config
-2026-11-11 21:55:48,563 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.with_runtime_opt.config
+2026-11-11 22:20:14,242 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.config
+2026-11-11 22:20:18,234 ort_format_model.utils [INFO] - Created config in /home/runner/work/bucle-modelos/bucle-modelos/onnx/required_operators_and_types.with_runtime_opt.config
 Converting models with optimization style 'Fixed' and level 'all'
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.ort
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.ort
@@ -259,32 +259,36 @@ Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/on
 Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.with_runtime_opt.ort
 Converted 2/2 models successfully.
 Converting models again without runtime optimizations to generate a complete config file. These converted models are temporary and will be deleted.
-Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmp0m081vdr.without_runtime_opt/htdemucs_6s.ort
-Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmp0m081vdr.without_runtime_opt/htdemucs.ort
+Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs_6s.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpqkzlvksi.without_runtime_opt/htdemucs_6s.ort
+Converting optimized ONNX model /home/runner/work/bucle-modelos/bucle-modelos/onnx/htdemucs.onnx to ORT format model /home/runner/work/bucle-modelos/bucle-modelos/onnx/tmpqkzlvksi.without_runtime_opt/htdemucs.ort
 Converted 2/2 models successfully.
 Generating config file from ORT format models with optimization style 'Runtime' and level 'all'
 total 985268
-drwxr-xr-x  2 runner runner      4096 Nov 11 21:55 .
-drwxr-xr-x 11 runner runner      4096 Nov 11 21:55 ..
--rw-r--r--  1 runner runner 174263526 Nov 11 21:55 htdemucs.onnx
--rw-r--r--  1 runner runner 210172080 Nov 11 21:55 htdemucs.ort
--rw-r--r--  1 runner runner 210209656 Nov 11 21:55 htdemucs.with_runtime_opt.ort
--rw-r--r--  1 runner runner 114559139 Nov 11 21:55 htdemucs_6s.onnx
--rw-r--r--  1 runner runner 149823040 Nov 11 21:55 htdemucs_6s.ort
--rw-r--r--  1 runner runner 149860616 Nov 11 21:55 htdemucs_6s.with_runtime_opt.ort
--rw-r--r--  1 runner runner       862 Nov 11 21:55 required_operators_and_types.config
--rw-r--r--  1 runner runner      1123 Nov 11 21:55 required_operators_and_types.with_runtime_opt.config
+drwxr-xr-x  2 runner runner      4096 Nov 11 22:20 .
+drwxr-xr-x 11 runner runner      4096 Nov 11 22:19 ..
+-rw-r--r--  1 runner runner 174263526 Nov 11 22:20 htdemucs.onnx
+-rw-r--r--  1 runner runner 210172080 Nov 11 22:20 htdemucs.ort
+-rw-r--r--  1 runner runner 210209656 Nov 11 22:20 htdemucs.with_runtime_opt.ort
+-rw-r--r--  1 runner runner 114559139 Nov 11 22:20 htdemucs_6s.onnx
+-rw-r--r--  1 runner runner 149823040 Nov 11 22:20 htdemucs_6s.ort
+-rw-r--r--  1 runner runner 149860616 Nov 11 22:20 htdemucs_6s.with_runtime_opt.ort
+-rw-r--r--  1 runner runner       862 Nov 11 22:20 required_operators_and_types.config
+-rw-r--r--  1 runner runner      1123 Nov 11 22:20 required_operators_and_types.with_runtime_opt.config
 Probando onnx/htdemucs.ort (torch 2.9.1 ts)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs.with_runtime_opt.ort (torch 2.9.1 ts)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs_6s.ort (torch 2.9.1 ts)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 Probando onnx/htdemucs_6s.with_runtime_opt.ort (torch 2.9.1 ts)
-Error loading Demucs model
-FALLO al cargar el modelo: Program terminated with exit(1)
+Could not find an implementation for Pad(13) node with name '/tencoder.1/Pad'
+Aborted()
+FALLO al cargar el modelo: Aborted(). Build with -sASSERTIONS for more info.
 ::endgroup::
 ::error::No se logró un modelo que funcione con el motor. El detalle quedó en registro/ultimo.txt
