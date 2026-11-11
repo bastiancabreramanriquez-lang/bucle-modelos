@@ -1,0 +1,146 @@
+# Genera los modelos de separación de stems para Bucle y los publica en este repositorio.
+# Se ejecuta a mano: pestaña Actions -> "Separar modelos Bucle" -> Run workflow.
+# Deja el registro completo en registro/ultimo.txt aunque falle.
+name: Separar modelos Bucle
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  modelos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Descargar el conversor y el motor (ambos MIT, de sevagh)
+        run: |
+          git clone --depth 1 https://github.com/sevagh/demucs.onnx ext/demucs.onnx
+          git clone --depth 1 https://github.com/sevagh/freemusicdemixer.com ext/fmd
+          mkdir -p motor && cp ext/fmd/web/demucs_onnx_simd.js ext/fmd/web/demucs_onnx_simd.wasm motor/
+          mkdir -p tools && cat > tools/probar.js <<'JSEOF'
+          // Prueba un modelo .ort con el motor real de freemusicdemixer (demucs_onnx_simd, MIT) en Node.
+          // Uso: node probar.js <carpeta_motor> <modelo.ort> <n_stems>
+          const fs = require('fs'), path = require('path');
+          const [dir, modelPath, nStemsArg] = process.argv.slice(2);
+          const nStems = +nStemsArg || 4;
+          globalThis.postMessage = (m) => { if (m && m.msg === 'WASM_LOG') console.log('  motor:', m.data); };
+          const src = fs.readFileSync(path.join(dir, 'demucs_onnx_simd.js'), 'utf8');
+          const libdemucs = new Function('require', '__filename', '__dirname', 'process', 'module', src + '\n;return libdemucs;')(require, path.join(dir, 'demucs_onnx_simd.js'), dir, process, {});
+          (async () => {
+            const m = await libdemucs({ locateFile: (p) => path.join(dir, p) });
+            const bytes = fs.readFileSync(modelPath);
+            const pm = m._malloc(bytes.length); m.HEAPU8.set(bytes, pm);
+            try { m._modelInit(pm, bytes.length); } catch (e) { console.log('FALLO al cargar el modelo:', e.message || e); process.exit(2); }
+            m._free(pm);
+            // 8 s de audio de prueba: "voz" con vibrato, bajo y golpes de ruido tipo batería
+            const sr = 44100, n = sr * 8, L = new Float32Array(n), R = new Float32Array(n);
+            let seed = 1; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647) * 2 - 1;
+            for (let i = 0; i < n; i++) {
+              const t = i / sr, beat = (t * 2) % 1;
+              const voz = 0.25 * Math.sin(2 * Math.PI * (330 + 6 * Math.sin(2 * Math.PI * 5 * t)) * t);
+              const bajo = 0.3 * Math.sin(2 * Math.PI * 55 * t);
+              const bat = 0.4 * Math.exp(-beat * 25) * rnd();
+              L[i] = voz + bajo + bat; R[i] = voz * 0.9 + bajo + bat;
+            }
+            const B = n * 4, pL = m._malloc(B), pR = m._malloc(B);
+            m.HEAPF32.set(L, pL / 4); m.HEAPF32.set(R, pR / 4);
+            const outs = []; for (let i = 0; i < 12; i++) outs.push(i < nStems * 2 ? m._malloc(B) : 0);
+            const t0 = Date.now();
+            try { m._modelDemixSegment(pL, pR, n, ...outs, false, 1, 0); } catch (e) { console.log('FALLO al separar:', e.message || e); process.exit(3); }
+            const secs = (Date.now() - t0) / 1000;
+            let eSig = 0, eErr = 0, bad = 0; const en = new Array(nStems).fill(0);
+            for (let i = 0; i < n; i += 3) {
+              let sl = 0, sr2 = 0;
+              for (let k = 0; k < nStems; k++) { const a = m.HEAPF32[outs[2 * k] / 4 + i], b = m.HEAPF32[outs[2 * k + 1] / 4 + i]; if (!isFinite(a) || !isFinite(b)) bad++; sl += a; sr2 += b; en[k] += a * a + b * b; }
+              eSig += L[i] * L[i] + R[i] * R[i]; eErr += (L[i] - sl) ** 2 + (R[i] - sr2) ** 2;
+            }
+            const snr = 10 * Math.log10(eSig / Math.max(eErr, 1e-12));
+            const tot = en.reduce((a, b) => a + b, 0) || 1;
+            console.log(`separó 8 s en ${secs.toFixed(1)} s · reconstrucción ${snr.toFixed(1)} dB · reparto ${en.map((e) => Math.round(e / tot * 100) + '%').join(' ')} · inválidos ${bad}`);
+            if (bad || !(snr > 10)) { console.log('FALLO: el resultado no es sano'); process.exit(4); }
+            console.log('OK');
+          })();
+          JSEOF
+      - name: Convertir, probar con el motor real y publicar
+        run: |
+          mkdir -p registro
+          cat > tools/convertir.sh <<'SHEOF'
+          set -u
+          mkdir -p modelos salida
+          echo "python: $(python --version 2>&1) · node: $(node -v)"
+          # Convertir desde los pesos originales de Demucs. El motor espera el modelo comprimido con gzip.
+          # El motor WASM está compilado con ONNX Runtime 1.22.0, así que se convierte con esa misma versión.
+          # Se prueban varios PyTorch (exportador clásico y dynamo) hasta que el motor acepte el modelo.
+          strings motor/demucs_onnx_simd.wasm | grep -E "^[A-Z][A-Za-z0-9]{2,40}$" | sort -u > registro/motor-cadenas.txt || true
+          cp ext/demucs.onnx/scripts/convert-pth-to-onnx.py tools/convertir_ts.py
+          sed -i 's/opset_version=17,/opset_version=17, dynamo=False,/' tools/convertir_ts.py
+          for STACK in "2.5.1 a" "2.8.0 a" "2.9.1 a" "2.9.1 ts"; do
+            [ -f salida/htdemucs.ort ] && [ -f salida/htdemucs_6s.ort ] && break
+            set -- $STACK; TORCH=$1; VAR=$2
+            echo "::group::torch $TORCH ($VAR) + onnxruntime 1.22.0"
+            printf 'torch==%s\ntorchaudio==%s\n' "$TORCH" "$TORCH" > restricciones.txt
+            if ! pip install --index-url https://download.pytorch.org/whl/cpu "torch==$TORCH" "torchaudio==$TORCH" > pip1.log 2>&1; then tail -n 60 pip1.log; echo "::warning::No se pudo instalar torch $TORCH"; echo "::endgroup::"; continue; fi
+            if ! pip install -c restricciones.txt "onnx>=1.17,<1.19" "onnxruntime==1.22.0" onnxscript diffq omegaconf julius einops lameenc dora-search pyyaml tqdm > pip2.log 2>&1; then tail -n 120 pip2.log; echo "::warning::Fallaron las dependencias con torch $TORCH"; echo "::endgroup::"; continue; fi
+            if ! pip install --no-deps openunmix > pip3.log 2>&1; then tail -n 40 pip3.log; echo "::warning::No se pudo instalar openunmix"; echo "::endgroup::"; continue; fi
+            if ! pip install --no-deps -e ext/demucs.onnx/demucs-for-onnx > pip4.log 2>&1; then tail -n 40 pip4.log; echo "::warning::No se pudo instalar demucs-for-onnx"; echo "::endgroup::"; continue; fi
+            pip list 2>/dev/null | grep -iE "^(torch|torchaudio|onnx|onnxruntime|onnxscript|numpy|diffq|omegaconf|openunmix|demucs|dora|julius|einops) " || true
+            python -c "import demucs.pretrained, diffq, omegaconf, openunmix, torchaudio; print('importaciones OK')" || { echo "::warning::Fallan las importaciones con torch $TORCH"; echo "::endgroup::"; continue; }
+            SCRIPT=ext/demucs.onnx/scripts/convert-pth-to-onnx.py; [ "$VAR" = ts ] && SCRIPT=tools/convertir_ts.py
+            rm -rf onnx && mkdir onnx
+            python "$SCRIPT" onnx 2>&1 | grep -v "Warning\|warn\|^  " | tail -n 40 || true
+            python "$SCRIPT" onnx --six-source 2>&1 | grep -v "Warning\|warn\|^  " | tail -n 40 || true
+            python -m onnxruntime.tools.convert_onnx_models_to_ort onnx --enable_type_reduction --optimization_style Fixed Runtime 2>&1 | tail -n 40 || true
+            ls -la onnx
+            for C in onnx/*.config; do [ -f "$C" ] && cp "$C" "registro/torch$TORCH-$VAR-$(basename "$C")"; done
+            for M in htdemucs htdemucs_6s; do
+              [ -f "salida/$M.ort" ] && continue
+              N=4; [ "$M" = "htdemucs_6s" ] && N=6
+              for F in "onnx/$M.ort" "onnx/$M.with_runtime_opt.ort"; do
+                [ -f "$F" ] || continue
+                echo "Probando $F (torch $TORCH $VAR)"
+                gzip -c "$F" > "$F.gz"
+                if node tools/probar.js motor "$F.gz" $N; then cp "$F.gz" "salida/$M.ort"; echo "$M OK con torch $TORCH $VAR ($F.gz)"; break; fi
+              done
+            done
+            echo "::endgroup::"
+          done
+          [ -f salida/htdemucs.ort ] || { echo "::error::No se logró un modelo que funcione con el motor. El detalle quedó en registro/ultimo.txt"; exit 1; }
+          # Partir en trozos de 45 MB (GitHub no acepta archivos de más de 100 MB) y escribir el índice
+          rm -rf modelos/*
+          python - <<'PY'
+          import hashlib, json, os
+          out = {}
+          for name in ('htdemucs', 'htdemucs_6s'):
+              p = f'salida/{name}.ort'
+              if not os.path.exists(p): continue
+              data = open(p, 'rb').read(); parts = []
+              for i in range(0, len(data), 45 * 1024 * 1024):
+                  fn = f'{name}.ort.part{len(parts):02d}'
+                  open(f'modelos/{fn}', 'wb').write(data[i:i + 45 * 1024 * 1024]); parts.append(fn)
+              out[name] = {'size': len(data), 'sha256': hashlib.sha256(data).hexdigest(), 'parts': parts}
+          json.dump(out, open('modelos/manifest.json', 'w'), indent=1)
+          print(json.dumps(out, indent=1))
+          PY
+          git config user.name "Bucle"
+          git config user.email "bucle@users.noreply.github.com"
+          git add modelos
+          git commit -m "Modelos de separación para Bucle" && git push
+          echo "PUBLICADO"
+          SHEOF
+          bash tools/convertir.sh 2>&1 | tee registro/ultimo.txt
+          exit "${PIPESTATUS[0]}"
+      - name: Guardar el registro en el repo
+        if: always()
+        run: |
+          git config user.name "Bucle"
+          git config user.email "bucle@users.noreply.github.com"
+          git add registro
+          git commit -m "Registro de la última ejecución" || true
+          git pull --rebase -q || true
+          git push || true
