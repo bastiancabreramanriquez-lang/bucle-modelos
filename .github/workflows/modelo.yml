@@ -74,12 +74,14 @@ jobs:
           for TORCH in 2.5.1 2.4.1 2.6.0; do
             echo "::group::torch $TORCH"
             echo "torch==$TORCH" > restricciones.txt
-            pip install -q --extra-index-url https://download.pytorch.org/whl/cpu -c restricciones.txt "torch==$TORCH" "numpy<2" "onnx==1.17.0" "onnxruntime==1.20.1" julius einops lameenc openunmix dora-search pyyaml tqdm || { echo "::endgroup::"; continue; }
+            if ! pip install --index-url https://download.pytorch.org/whl/cpu "torch==$TORCH" > pip1.log 2>&1; then tail -n 20 pip1.log; echo "::warning::No se pudo instalar torch $TORCH"; echo "::endgroup::"; continue; fi
+            if ! pip install -c restricciones.txt "numpy<2" "onnx==1.17.0" "onnxruntime==1.20.1" julius einops lameenc dora-search pyyaml tqdm > pip2.log 2>&1; then tail -n 30 pip2.log; echo "::warning::Fallaron las dependencias con torch $TORCH"; echo "::endgroup::"; continue; fi
+            pip install -q --no-deps openunmix
             pip install -q --no-deps -e ext/demucs.onnx/demucs-for-onnx
             rm -rf onnx && mkdir onnx
-            python ext/demucs.onnx/scripts/convert-pth-to-onnx.py onnx || true
-            python ext/demucs.onnx/scripts/convert-pth-to-onnx.py onnx --six-source || true
-            python -m onnxruntime.tools.convert_onnx_models_to_ort onnx --enable_type_reduction --optimization_style Fixed Runtime || true
+            python ext/demucs.onnx/scripts/convert-pth-to-onnx.py onnx 2>&1 | tail -n 15 || true
+            python ext/demucs.onnx/scripts/convert-pth-to-onnx.py onnx --six-source 2>&1 | tail -n 15 || true
+            python -m onnxruntime.tools.convert_onnx_models_to_ort onnx --enable_type_reduction --optimization_style Fixed Runtime 2>&1 | tail -n 15 || true
             ls -la onnx
             for M in htdemucs htdemucs_6s; do
               [ -f "salida/$M.ort" ] && continue
@@ -93,7 +95,7 @@ jobs:
             echo "::endgroup::"
             [ -f salida/htdemucs.ort ] && [ -f salida/htdemucs_6s.ort ] && break
           done
-          [ -f salida/htdemucs.ort ] || { echo "No se logró un modelo que funcione con el motor."; exit 1; }
+          [ -f salida/htdemucs.ort ] || { echo "::error::No se logró un modelo que funcione con el motor (revisa los grupos 'torch ...' de arriba)."; exit 1; }
           # Partir en trozos de 45 MB (GitHub no acepta archivos de más de 100 MB) y escribir el índice
           rm -rf modelos/*
           python - <<'PY'
